@@ -1,0 +1,59 @@
+{
+    "metaDataVersion": "1.0.0",
+    "category": "com.microchip.ide.project",
+    "content": {
+        "metaDataVersion": "1.3.0",
+        "name": "com.microchip.mcu8.mplabx.project.avr-iot-provisioning-mplab",
+        "version": "0.4.6",
+        "displayName": "AVR-IoT provisioning firmware",
+        "projectName": "avr-iot-provisioning-mplab",
+        "shortDescription": "Firmware used during the cloud provisioning process for AVR-IoT Wx, see https://avr-iot.com/",
+        "ide": {
+            "name": "MPLAB X",
+            "semverRange": ">=5.45.0"
+        },
+        "compiler": [
+            {
+                "name": "XC8",
+                "semverRange": "^2.32.0"
+            }
+        ],
+        "dfp": {
+            "name": "ATmega_DFP",
+            "semverRange": "^2.4.131"
+        },
+        "configurator": {
+            "name": "MCC",
+            "semverRange": ">=5.0.2"
+        },
+        "device": {
+            "metaDataVersion": "1.0.0",
+            "category": "com.microchip.portal.contentRef",
+            "content": {
+                "metaDataVersion": "1.0.0",
+                "category": "com.microchip.device",
+                "name": "ATMEGA4808",
+                "versionRange": "*"
+            }
+        },
+        "author": "Microchip",
+        "peripherals": [
+            "I2C",
+            "SPI",
+            "TWI",
+            "UART"
+        ],
+        "keywords": ["Communication", "IoT", "IoT Provisioning", "AWS", "Google", "Azure", "Wireless", "Wi-Fi", "I2C", "SPI", "UART", "MCC"],
+        "additionalData": {
+            "longDescription": {
+                "metaDataVersion": "1.0.0",
+                "category": "com.microchip.portal.fileRef",
+                "content": {
+                    "metaDataVersion": "1.0.0",
+                    "fileName": "./README.md",
+                    "mimeType": "text/markdown"
+                }
+            }
+        }
+    }
+}
