@@ -321,11 +321,11 @@
         <targetPluginBoard></targetPluginBoard>
         <platformTool>nEdbgTool</platformTool>
         <languageToolchain>XC8</languageToolchain>
-        <languageToolchainVersion>2.35</languageToolchainVersion>
+        <languageToolchainVersion>2.40</languageToolchainVersion>
         <platform>3</platform>
       </toolsSet>
       <packs>
-        <pack name="ATmega_DFP" vendor="Microchip" version="2.4.131"/>
+        <pack name="ATmega_DFP" vendor="Microchip" version="3.0.158"/>
       </packs>
       <ScriptingSettings>
       </ScriptingSettings>
@@ -548,11 +548,11 @@
         <targetPluginBoard></targetPluginBoard>
         <platformTool>noID</platformTool>
         <languageToolchain>XC8</languageToolchain>
-        <languageToolchainVersion>2.35</languageToolchainVersion>
+        <languageToolchainVersion>2.40</languageToolchainVersion>
         <platform>3</platform>
       </toolsSet>
       <packs>
-        <pack name="ATmega_DFP" vendor="Microchip" version="2.4.131"/>
+        <pack name="ATmega_DFP" vendor="Microchip" version="3.0.158"/>
       </packs>
       <ScriptingSettings>
       </ScriptingSettings>

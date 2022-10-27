@@ -40,6 +40,7 @@ enum winc_read_write_args{
 #define WINC_READ_NUM_ARGS WINC_WRITE_ARG_BLOB_LENGTH
 
 uint16_t winc_init(void);
+uint16_t winc_download_mode(bool set);
 
 uint16_t cmd_winc_writeblob(uint8_t argc, char *argv[], uint8_t *data, uint16_t *data_length);
 uint16_t cmd_winc_read(uint8_t argc, char *argv[], uint8_t *data, uint16_t *data_length);

@@ -39,11 +39,12 @@ static uint16_t parse_and_check_write_args(uint8_t argc, char *argv[], uint32_t 
 static uint16_t parse_and_check_read_args(uint8_t argc, char *argv[], uint32_t *address_parsed, uint16_t *length_parsed);
 static uint16_t parse_and_check_erase_args(uint8_t argc, char *argv[], uint32_t *address_parsed);
 static uint16_t parse_and_check_common_args(uint8_t argc, char *argv[], uint8_t num_args, uint32_t *address_parsed, uint16_t *length_parsed);
-static uint16_t winc_download_mode(bool set);
 
 uint16_t winc_init(void) {
     // Initialize WINC stack
-    return winc_download_mode(false);
+    tstrWifiInitParam wifi_parameters;
+    memset((uint8_t*)&wifi_parameters, 0, sizeof(wifi_parameters));
+    return STATUS_SOURCE_WINC(m2m_wifi_init(&wifi_parameters));
 }
 
 /*
@@ -98,7 +99,6 @@ uint16_t cmd_winc_writeblob(uint8_t argc, char *argv[], uint8_t *data, uint16_t 
 
     winc_download_mode(true);
 	m2m_status = spi_flash_write(data, address, length);
-    winc_download_mode(false);
 
     return STATUS_SOURCE_WINC(m2m_status);
 }
@@ -145,7 +145,6 @@ uint16_t cmd_winc_read(uint8_t argc, char *argv[], uint8_t *data, uint16_t *data
     uint8_t *data_raw = data+length;
     winc_download_mode(true);
 	m2m_status = spi_flash_read(data_raw, address, length);
-    winc_download_mode(false);
 
     if (m2m_status != M2M_SUCCESS) {
         // Something went wrong, can't trust the data so tell the caller no data returned
@@ -237,7 +236,6 @@ uint16_t cmd_winc_erasesector(uint8_t argc, char *argv[], uint8_t *data, uint16_
 
     winc_download_mode(true);
 	m2m_status = spi_flash_erase(address, FLASH_SECTOR_SZ);
-    winc_download_mode(false);
 
     return STATUS_SOURCE_WINC(m2m_status);
 }
@@ -260,9 +258,17 @@ static uint16_t parse_and_check_erase_args(uint8_t argc, char *argv[], uint32_t 
 }
 
 // Set/unset WINC download mode
-static uint16_t winc_download_mode(bool set)
+uint16_t winc_download_mode(bool set)
 {
+    // WINC module will boot in normal mode (i.e. not download mode)
+    static bool download_mode = false;
     int8_t m2m_status = M2M_SUCCESS;
+
+    if ((set && download_mode) || (!set && !download_mode)) {
+        // Already in correct mode
+        return STATUS_SOURCE_WINC(M2M_SUCCESS);
+    }
+
     if (set) {
         // First check that the WINC isn't already initialized
         if(WIFI_STATE_DEINIT != m2m_wifi_get_state()) {
@@ -270,10 +276,12 @@ static uint16_t winc_download_mode(bool set)
             m2m_wifi_deinit(NULL);
         }
         m2m_status = m2m_wifi_download_mode();
+        download_mode = true;
     } else {
         tstrWifiInitParam wifi_parameters;
         memset((uint8_t*)&wifi_parameters, 0, sizeof(wifi_parameters));
         m2m_status = m2m_wifi_init(&wifi_parameters);
+        download_mode = false;
     }
     DELAY_milliseconds(250);
     return STATUS_SOURCE_WINC(m2m_status);
@@ -289,6 +297,7 @@ uint16_t read_winc_version(tstrM2mRev *version_info)
 {
     int8_t m2m_status = M2M_SUCCESS;
 
+    winc_download_mode(false);
 	m2m_status = m2m_fwinfo_get_firmware_info(true, version_info);
 	return STATUS_SOURCE_WINC(m2m_status);
 }

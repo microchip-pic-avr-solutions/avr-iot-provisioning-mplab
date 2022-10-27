@@ -51,6 +51,11 @@ void setUp(void)
 {
     // Just ignore all delays in all tests. They are not important for the tested functionality
     DELAY_milliseconds_Ignore();
+
+    // Make sure WINC stack is in a known state before running any tests
+    m2m_wifi_init_IgnoreAndReturn(0);
+    winc_download_mode(false);
+    m2m_wifi_init_StopIgnore();
 }
 
 void tearDown(void)
@@ -104,8 +109,6 @@ static void configure_mock_spi_flash_write(uint8_t *data, uint16_t address, uint
     m2m_wifi_download_mode_ExpectAndReturn(0);
     // Configure spi_flash mock
     spi_flash_write_ExpectAndReturn(data, address, data_length, m2m_status);
-    // WINC download mode should be disabled after writing is finished
-    m2m_wifi_init_ExpectAnyArgsAndReturn(0);
 }
 
 // Helper that configures mocks for a spi_flash_erase
@@ -118,8 +121,6 @@ static void configure_mock_spi_flash_erase(uint16_t address, int8_t m2m_status)
     m2m_wifi_download_mode_ExpectAndReturn(0);
     // Configure spi_flash mock
     spi_flash_erase_ExpectAndReturn(address, FLASH_SECTOR_SZ, m2m_status);
-    // WINC download mode should be disabled after writing is finished
-    m2m_wifi_init_ExpectAnyArgsAndReturn(0);
 }
 
 // Helper that configures mocks for a spi_flash_read
@@ -132,8 +133,6 @@ static void configure_mock_spi_flash_read(uint8_t *data, uint16_t address, uint1
     m2m_wifi_download_mode_ExpectAndReturn(0);
     // Configure spi_flash mock. Second half of data buffer is used for the raw binary data while the hex encoded data will begin at the start of the buffer
     spi_flash_read_ExpectAndReturn(data, address, data_length, m2m_status);
-    // WINC download mode should be disabled after writing is finished
-    m2m_wifi_init_ExpectAnyArgsAndReturn(0);
 }
 
 void test_cmd_winc_writeblob_one_page_returns_ok(void)
@@ -460,8 +459,6 @@ void test_cmd_winc_erasesector_when_winc_is_initialized_runs_deinit(void)
     m2m_wifi_download_mode_ExpectAndReturn(0);
     // Configure spi_flash mock
     spi_flash_erase_ExpectAndReturn(address, FLASH_SECTOR_SZ, M2M_SUCCESS);
-    // WINC download mode should be disabled after writing is finished
-    m2m_wifi_init_ExpectAnyArgsAndReturn(0);
 
     uint16_t result = cmd_winc_erasesector(argc, argv, NULL, &data_length_received);
 

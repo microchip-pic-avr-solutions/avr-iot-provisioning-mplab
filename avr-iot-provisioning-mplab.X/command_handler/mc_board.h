@@ -14,7 +14,7 @@ uint16_t get_board_versions(char *versions, uint16_t *version_length);
 #define MC_BOARD_NAME    ("AVR-IoT WG")
 #define MC_FW_NAME       ("AVR-IoT provisioning FW")
 // Version of the complete firmware (as opposed to the Command handler version MC_VERSIONSTRING found in mc_parser.h)
-#define MC_FW_VERSION    ("0.4.7")
+#define MC_FW_VERSION    ("0.4.8")
 
 // WINC version contains both a firmware version and a driver version
 // "WINC firmware xx.yy.zz\r\nWINC driver xx.yy.zz\r\n"
