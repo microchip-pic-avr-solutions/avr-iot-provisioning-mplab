@@ -4,7 +4,7 @@
     "content": {
         "metaDataVersion": "1.3.0",
         "name": "com.microchip.mcu8.mplabx.project.avr-iot-provisioning-mplab",
-        "version": "0.4.7",
+        "version": "0.4.9",
         "displayName": "AVR-IoT provisioning firmware",
         "projectName": "avr-iot-provisioning-mplab",
         "shortDescription": "Firmware used during the cloud provisioning process for AVR-IoT Wx, see https://avr-iot.com/",
